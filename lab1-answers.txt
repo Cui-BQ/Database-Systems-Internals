@@ -1,0 +1,45 @@
+Describe what Lab1 was about:
+This lab is about an incomplete DBMS. It doesn't support backup, index, multi thread
+even unable to really make a query (There is no query functions).
+The purpose of this lab is to make the basic parts for a very simply DBMS
+
+Describe the various components that you implemented and how they work:
+Tuples: The smallest components in side a database, tuples and one TupleDesc make up a table.
+Since each table has a fixed schema for all its tuples, so each table is associate with one TupleDesc.
+
+Catalog: I think Catalog is the database of the DBMS, it store all the tables and their TupleDesc.
+Thus, each DBMS only has one Catalog.
+
+BufferPool: A place to store the most recent used data(Pages). HeapFile always ask BufferPool for pages first.
+If the page isn't store in BufferPool, it will call HeapFile to get that page, and return to HeapFile.
+BufferPool has a fixed size, if no more free space for the new page, it will delete the older page based on its policy.
+
+HeapFile page: HeapFile made by HeapPages, and HeapPage made by Tuples. Each page has the same size and contains
+a TupleDesc for their associate HeapFile. Thus, depend on the TupleDesc size, the number of Tuples each Page can hold
+might be different.
+
+Heap File: Each table has its own HeapFile, but their raw data were stored in a file.
+Everytime when a new table is added to the Database, it will convert the file to HeapFile, then add to the Catalog.
+
+SeqScan Operators: The lowest operator of a DBMS, it will iterate the associated for output results.
+
+
+
+Describe any design decisions you made:
+I always use ConcurrentHashMap to store data whenever I saw a ConcurrentHashMap import.
+
+
+One example of a unit test:
+Add a test to check the getHeaderSize() method in HeapPage Class.
+I passed all HeapPageIdTest, RecordIdTest, and HeapPageReadTest but after I completed SeqScan.java,
+I failed on the ScanTest. It said some array index out of range error and spend me a long time to
+find the bug was in the getHeaderSize() method.
+
+
+Discuss and justify any changes you made to the API:
+No
+
+Describe any missing or incomplete elements of your code:
+The getPage method in BufferPool Class has a TransactionId and a Permission parameter,
+but I didn't use them in this lab.
+Also, many of the Class should contain a Locker or use TransactionId and Permission but i didn't implement them either.

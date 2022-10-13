@@ -1,0 +1,13 @@
+Feedback for: boqiang
+--------------------------------------------------------------
+Total Score (%): 99
+Unit Test Score (out of 32): 32
+System Test Score (out of 4): 4
+Code Score (out of 10): 9
+Writeup Score (out of 10): 10
+--------------------------------------------------------------
+Code Feedback:
+(-1) Please write some comments in your code.
+(-0) It's better not to leave commented out codes in your turn-in version.
+
+Writeup Feedback: You did an excellent job with the write-up!

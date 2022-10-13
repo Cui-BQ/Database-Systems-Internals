@@ -1,0 +1,27 @@
+Describe what Lab3 was about:
+The main part of this lab is to make a lock manager class to give each page a lock,
+so this DBMS can handle multiple threads doing transactions at the same time.
+The lock inside my lock manager is page-level locks. The BufferPool class uses the
+2PL lock policy to process transactions, this means transactions can only release
+acquired locks right before commit/abort. The BufferPool also uses a “no steal and force”
+policy to update the disk, by using this policy, only committed transactions can write
+changes to disk right after the commit happened. Lock manager support detects deadlock,
+if found deadlock, then aborts the current transaction and throws an exception.
+After aborted the transaction, all dirty pages that the aborted transaction made will be cleaned
+and restored to BufferPool.
+To sum up, first getPage method in BufferPool became synchronized, so only one transaction can acquire
+lock each time. Transactions will ask BufferPool to acquire different types of locks based on
+their Permissions, then bufferPool asks Lock manager to do this job. If the transaction acquires share lock,
+then as long as no other transactions hold exclusive lock on this page, this transaction can always get
+a share lock. And once a Transaction acquired the ExclusiveLock on a page, no other transactions can
+access this page before its ExclusiveLock has been released. If a transaction acquires lock fails,
+the lock manager will check if there is a deadlock. If found deadlock then abort this transaction itself,
+if not found then let this transaction wait.
+
+
+Describe any design decisions you made:
+I used page-level lock, dependency graphs for detect deadlocks, aborting self to solve deadlock.
+
+
+One example of a unit test:
+A transaction uses all bufferpool page space and abort.

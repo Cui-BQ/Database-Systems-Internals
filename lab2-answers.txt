@@ -1,0 +1,43 @@
+0.99 seconds
+2.42 seconds
+900.49 seconds
+
+Describe what Lab2 was about:
+The most important method in Predicate classes is filter(), predicate classes use this method to compare tuple values and turn true if they meet the operation.
+Implemented filter and join operators, they receive tuples OpIterator and Predicate, then iterate over OpIterator and output tuples based on Predicate.
+Integer/StringAggregator and Aggregate. Integer/StringAggregator used to group by Integer/String by the passed aggregation operator and provide an iterator for Aggregate.
+Implemented Insertion and deletion tuples to tables, and manage pages in bufferpool.
+
+
+Describe any design decisions you made:
+I used a Queue to record the sequence of pages in bufferpool and evict the oldest page if the space isn’t enough in bufferpool.
+
+
+One example of a unit test:
+When I ran Query 3, I found a weird thing with GROUP BY aggregate.
+The Aggregate.java has a getTupleDesc() method which returns the TupleDesc of this Aggregate.
+The TupleDesc constructor is TupleDesc(Type[] typeAr, String[] fieldAr), so I need to pass two arrays in order to make a TupleDesc.
+At the beginning, I made String[] fieldAr = new String[]{"groupVal", "("+aop.toString()+")" + child.getTupleDesc().getFieldName(afield)};
+Then my code can pass all the nuit and systems tests but failed to query Query 3. The error message was:
+simpledb.DbException
+        at simpledb.Parser.processNextStatement(Parser.java:558)
+        at simpledb.Parser.start(Parser.java:686)
+        at simpledb.Parser.main(Parser.java:595)
+        at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+        at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+        at simpledb.SimpleDb.main(SimpleDb.java:83)
+However, after I made String[] fieldAr = new String[]{child.getTupleDesc().getFieldName(gfield), "("+aop.toString()+")" + child.getTupleDesc().getFieldName(afield)};
+
+My code can run Query 3 normally. The only different is I changed "groupVal" to child.getTupleDesc().getFieldName(gfield).
+I tried the two different fieldAr few times with ant clean and ant disk, and sure they affected the GROUP BY aggregate.
+The fieldAr just should be the name of the fields and they shouldn’t affect the code running I think.
+If it’s not a bug, I think you can add a test for the getTupleDesc() method.
+
+
+Discuss and justify any changes you made to the API:
+No
+
+Describe any missing or incomplete elements of your code:
+No

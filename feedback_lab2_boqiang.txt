@@ -1,0 +1,14 @@
+Feedback for: boqiang
+--------------------------------------------------------------
+Total Score (%): 98
+Unit Test Score (out of 38): 38
+System Test Score (out of 24): 24
+Code Score (out of 10): 8.5
+Writeup Score (out of 10): 9.5
+--------------------------------------------------------------
+Code feedback:
+(-1): Please write comments on long/complicated areas of your implementation, especially in the aggregators.
+(-0.5) The tag should be `lab2` instead of `lab2-part2`. This is critical to our auto-grader.
+
+Writeup feedback:
+(-0.5): We expect a longer explanation about each component in Lab2 and how they work/interact with each other. 
